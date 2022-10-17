@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}{% endblock %}</title>
+  {% endblock %}
+</head>
+
+<body>
+  <div id="content">
+    {% block content %}{% endblock %}
+  </div>
+  <script src="https://unpkg.com/htmx.org@1.8.2"
+    integrity="sha384-+8ISc/waZcRdXCLxVgbsLzay31nCdyZXQxnsUy++HJzJliTzxKWr0m1cIEMyUzQu"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/htmx.org@1.8.2/dist/ext/json-enc.js"></script>
+</body>
+
+</html>

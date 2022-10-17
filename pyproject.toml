@@ -11,6 +11,7 @@ uvicorn = "^0.18.3"
 Jinja2 = "^3.1.2"
 pydantic = "^1.10.2"
 python-multipart = "^0.0.5"
+django = "^4.1.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.982"

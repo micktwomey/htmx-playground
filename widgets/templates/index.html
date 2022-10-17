@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}htmx{% endblock %}
+
+{% block content %}
+
+<div hx-get="/widgets" hx-trigger="load" id="widgets"></div>
+
+<form hx-post="/widgets" hx-target="#widgets">
+  {% csrf_token %}
+  <label for="key">key</label>
+  <input id="key" name="key" required>
+  <label for="value">value</label>
+  <input id="value" name="value" required>
+  <input type="submit">
+</form>
+
+{% endblock %}
