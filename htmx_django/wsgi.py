@@ -1,5 +1,5 @@
 """
-WSGI config for htmx project.
+WSGI config for htmx_django project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "htmx.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "htmx_django.settings")
 
 application = get_wsgi_application()

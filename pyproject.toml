@@ -12,6 +12,8 @@ Jinja2 = "^3.1.2"
 pydantic = "^1.10.2"
 python-multipart = "^0.0.5"
 django = "^4.1.2"
+sqlalchemy = {extras = ["mypy"], version = "^1.4.42"}
+aiosqlite = "^0.17.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.982"
@@ -20,3 +22,6 @@ black = "^22.10.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
