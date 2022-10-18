@@ -24,5 +24,6 @@ class Widget(Base):
 async def setup_engine(sqluri: str):
     engine = create_async_engine("sqlite+aiosqlite:///fastapi.sqlite")
     async with engine.begin() as conn:
+        # TODO: use alembic
         await conn.run_sync(Base.metadata.create_all)
     SessionMaker.configure(bind=engine)
