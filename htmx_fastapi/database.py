@@ -26,6 +26,7 @@ class Widget(Base):
     key = Column(String, unique=True)
     value = Column(String)
     create_date = Column(DateTime, server_default=func.now())
+    update_date = Column(DateTime, onupdate=func.now(), server_default=func.now())
 
 
 def run_upgrade(connection, config: Config):
