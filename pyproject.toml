@@ -3,6 +3,12 @@ name = "htmx"
 version = "0.1.0"
 description = "Playing with htmx"
 authors = ["Michael Twomey <mick@twomeylee.name>"]
+packages = [
+    { include = "htmx_django" },
+    { include = "htmx_fastapi" },
+    { include = "widgets_django" },
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.10"

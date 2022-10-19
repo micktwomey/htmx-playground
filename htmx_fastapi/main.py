@@ -3,10 +3,14 @@ from fastapi import Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+import jinja2
 
 from . import database
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(
+    directory="templates",
+    loader=jinja2.PackageLoader(package_name="htmx_fastapi", package_path="templates"),
+)
 
 app = fastapi.FastAPI()
 
@@ -31,9 +35,9 @@ async def get_widgets(
     request: Request,
     session: database.AsyncSession = fastapi.Depends(database.get_session),
 ):
-    results = await session.execute(database.select(database.Widget))
+    widgets = await database.get_widgets(session)
     return templates.TemplateResponse(
-        "widgets.html", {"request": request, "widgets": results.scalars().all()}
+        "widgets.html", {"request": request, "widgets": widgets}
     )
 
 
@@ -43,17 +47,8 @@ async def post_widget(
     widget: Widget,
     session: database.AsyncSession = fastapi.Depends(database.get_session),
 ):
-    async with session.begin():
-        stmt = database.select(database.Widget).filter_by(key=widget.key)
-        results = await session.execute(stmt)
-        w = results.scalar()
-        if w is not None:
-            w.value = widget.value
-        else:
-            w = database.Widget(key=widget.key, value=widget.value)
-            session.add(w)
-        await session.commit()
-    results = await session.execute(database.select(database.Widget))
+    await database.create_or_update_widget(session, key=widget.key, value=widget.value)
+    widgets = await database.get_widgets(session)
     return templates.TemplateResponse(
-        "widgets.html", {"request": request, "widgets": results.scalars().all()}
+        "widgets.html", {"request": request, "widgets": widgets}
     )

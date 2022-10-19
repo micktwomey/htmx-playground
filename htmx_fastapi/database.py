@@ -22,8 +22,27 @@ class Widget(Base):
 
 
 async def setup_engine(sqluri: str):
-    engine = create_async_engine("sqlite+aiosqlite:///fastapi.sqlite")
+    engine = create_async_engine(sqluri)
     async with engine.begin() as conn:
         # TODO: use alembic
         await conn.run_sync(Base.metadata.create_all)
     SessionMaker.configure(bind=engine)
+
+
+async def get_widgets(session: AsyncSession) -> list[Widget]:
+    results = await session.execute(select(Widget))
+    return results.scalars().all()
+
+
+async def create_or_update_widget(session: AsyncSession, key: str, value: str) -> int:
+    async with session.begin():
+        stmt = select(Widget).filter_by(key=key)
+        results = await session.execute(stmt)
+        w = results.scalar()
+        if w is not None:
+            w.value = value
+        else:
+            w = Widget(key=key, value=value)
+            session.add(w)
+        await session.commit()
+    return w.id
