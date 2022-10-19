@@ -1,10 +1,17 @@
-from sqlalchemy import Integer, String, Column, DateTime, func, select
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import Column, DateTime, Integer, String, func, select
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+from alembic.config import Config
+from alembic import command
 
 Base = declarative_base()
 
-SessionMaker = sessionmaker(expire_on_commit=False, class_=AsyncSession)
+
+def create_session_maker() -> sessionmaker:
+    return sessionmaker(expire_on_commit=False, class_=AsyncSession)
+
+
+SessionMaker = create_session_maker()
 
 
 async def get_session():
@@ -21,11 +28,15 @@ class Widget(Base):
     create_date = Column(DateTime, server_default=func.now())
 
 
-async def setup_engine(sqluri: str):
+def run_upgrade(connection, config: Config):
+    config.attributes["connection"] = connection
+    command.upgrade(config, "head")
+
+
+async def setup(sqluri: str):
     engine = create_async_engine(sqluri)
     async with engine.begin() as conn:
-        # TODO: use alembic
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(run_upgrade, Config("alembic.ini"))
     SessionMaker.configure(bind=engine)
 
 

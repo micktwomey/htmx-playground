@@ -5,6 +5,7 @@
 
 <div hx-get="/widgets" hx-trigger="load" id="widgets"></div>
 
+{# Using JSON for POST as it's a shade nicer for working in FastAPI with pydantic schemas #}
 <form hx-post="/widgets" hx-target="#widgets" hx-ext="json-enc">
   <label for="key">key</label>
   <input id="key" name="key" required>
