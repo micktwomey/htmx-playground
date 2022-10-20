@@ -1,17 +1,42 @@
 {% extends "base.html" %}
-{% block title %}htmx{% endblock %}
+{% block title %}htmx-FastAPI{% endblock %}
 
 {% block content %}
 
-<div hx-get="/widgets" hx-trigger="load" id="widgets"></div>
+<article>
+  <section>
+    <div class="prose" hx-get="/widgets" hx-trigger="load" id="widgets"></div>
 
-{# Using JSON for POST as it's a shade nicer for working in FastAPI with pydantic schemas #}
-<form hx-post="/widgets" hx-target="#widgets" hx-ext="json-enc">
-  <label for="key">key</label>
-  <input id="key" name="key" required>
-  <label for="value">value</label>
-  <input id="value" name="value" required>
-  <input type="submit">
-</form>
+    {# Using JSON for POST as it's a shade nicer for working in FastAPI with pydantic schemas #}
+    <form hx-post="/widgets" hx-target="#widgets" hx-ext="json-enc" class="space-y-8 divide-y divide-gray-200">
+      <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+        <div class="space-y-6 sm:space-y-5">
+          <div class="space-y-6 sm:space-y-5">
+            <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 sm:pt-5">
+              <label for="key"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                </svg>
+                key</label>
+              <div class="mt-1 sm:col-span-2 sm:mt-0">
+                <div class="flex max-w-lg rounded-md shadow-sm">
+                  <input id="key" name="key" type="text" autocomplete="key" required
+                    class="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label for="value">value</label>
+        <input id="value" name="value" required>
+        <input type="submit">
+      </div>
+      </div>
+    </form>
+
+  </section>
+
+</article>
 
 {% endblock %}
